@@ -26,21 +26,16 @@ const ProductScreen = ({ history, match }) => {
   const { userInfo } = userLogin
 
   const productReviewCreate = useSelector((state) => state.productReviewCreate)
-  const {
-    success: successProductReview,
-    loading: loadingProductReview,
-    error: errorProductReview,
-  } = productReviewCreate
+  const { success: successProductReview, error: errorProductReview } =
+    productReviewCreate
 
   useEffect(() => {
     if (successProductReview) {
       setRating(0)
       setComment('')
-    }
-    if (!product._id || product._id !== match.params.id) {
-      dispatch(listProductDetails(match.params.id))
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
     }
+    dispatch(listProductDetails(match.params.id))
   }, [dispatch, match, successProductReview])
 
   const addToCartHandler = () => {
@@ -168,7 +163,6 @@ const ProductScreen = ({ history, match }) => {
                       Review submitted successfully
                     </Message>
                   )}
-                  {loadingProductReview && <Loader />}
                   {errorProductReview && (
                     <Message variant='danger'>{errorProductReview}</Message>
                   )}
@@ -198,11 +192,7 @@ const ProductScreen = ({ history, match }) => {
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
-                      <Button
-                        disabled={loadingProductReview}
-                        type='submit'
-                        variant='primary'
-                      >
+                      <Button type='submit' variant='primary'>
                         Submit
                       </Button>
                     </Form>
